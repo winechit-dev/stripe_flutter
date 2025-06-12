@@ -1,17 +1,13 @@
-import 'dart:async';
-
-import 'package:stpipe_flutter/app/app.dart';
-import 'package:stpipe_flutter/bootstrap.dart';
 import 'package:flutter/material.dart';
 import 'services/payment_service.dart';
 import 'presentation/payment_screen.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
   // Initialize Stripe
   await PaymentService.initializeStripe();
-
- // bootstrap(() => const MyApp());
+  
   runApp(const MyApp());
 }
 
@@ -29,4 +25,4 @@ class MyApp extends StatelessWidget {
       home: const PaymentScreen(),
     );
   }
-}
+} 
