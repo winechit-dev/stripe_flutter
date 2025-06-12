@@ -1,28 +1,11 @@
 import 'package:flutter/material.dart';
-import 'services/payment_service.dart';
-import 'presentation/payment_screen.dart';
+import 'package:stpipe_flutter/app/view/app.dart';
+import 'package:stpipe_flutter/bootstrap.dart';
+import 'package:stpipe_flutter/services/payment_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
   // Initialize Stripe
   await PaymentService.initializeStripe();
-  
-  runApp(const MyApp());
+  await bootstrap(() => const App());
 }
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Stripe Payment Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const PaymentScreen(),
-    );
-  }
-} 
