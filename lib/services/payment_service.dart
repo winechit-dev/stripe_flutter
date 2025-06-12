@@ -67,7 +67,9 @@ class PaymentService {
   }
 
   static String _calculateAmount(double amount) {
-    // Convert amount to the smallest currency unit (e.g., cents for USD)
-    return (amount * 100).toString();
+    // Ensure correct rounding and handle negative/zero amounts
+    final smallestUnit =
+        (amount * 100).round().clamp(0, double.maxFinite.toInt());
+    return smallestUnit.toString();
   }
 }

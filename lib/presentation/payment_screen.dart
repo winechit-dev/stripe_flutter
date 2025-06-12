@@ -10,33 +10,36 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   bool _isLoading = false;
+  final TextEditingController _amountController = TextEditingController(text: '10.00');
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    super.dispose();
+  }
 
   Future<void> _handlePayment() async {
     setState(() {
       _isLoading = true;
     });
-  /*
-   * amount: '37000', // Amount in satang (e.g., 37000 = ฿370.00)
-   * currency: 'thb',
-   * */
     try {
       await PaymentService.makePayment(
-        amount: 1000, // Amount in cents (e.g., 1000 = $10.00)
-        currency: 'usd',
+        amount: double.parse(_amountController.text),
+        currency: 'thb',
       );
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               content: Text('Payment successful!'),
-              backgroundColor: Colors.green),
+              backgroundColor: Colors.green,),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Payment failed: ${e.toString()}'),
+            content: Text('Payment failed: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -68,13 +71,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Amount: \$10.00',
-              style: TextStyle(
-                fontSize: 18,
+            SizedBox(
+              width: 200,
+              child: TextField(
+                controller: _amountController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Amount',
+                  border: OutlineInputBorder(),
+                  suffixText: 'THB',
+                ),
               ),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _isLoading ? null : _handlePayment,
               style: ElevatedButton.styleFrom(
